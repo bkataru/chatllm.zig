@@ -1,0 +1,26 @@
+# Zig build artifacts
+zig-out/
+zig-cache/
+.zig-cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Repomix analysis files (not part of the project)
+*.repomix.xml
+
+# Models (large binary files)
+*.bin
+*.gguf
+*.ggmm
+models/
+
+# Local chatllm.cpp checkout (use -Dchatllm_path instead)
+chatllm.cpp/

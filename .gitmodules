@@ -1,0 +1,3 @@
+[submodule "chatllm.cpp"]
+	path = chatllm.cpp
+	url = https://github.com/jasonkneen/chatllm.cpp.git
