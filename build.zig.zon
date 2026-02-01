@@ -4,7 +4,14 @@
     .fingerprint = 0x381c660de82eac1b,
     .minimum_zig_version = "0.15.0",
     .paths = .{
-        ".",
+        "build.zig",
+        "build.zig.zon",
+        "build_chatllm.zig",
+        "src",
+        "chatllm.cpp.zig",
+        "examples",
+        "README.md",
+        "LICENSE",
     },
     .dependencies = .{},
 }

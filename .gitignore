@@ -16,11 +16,32 @@ Thumbs.db
 # Repomix analysis files (not part of the project)
 *.repomix.xml
 
+# Session exports from opencode
+session-*.md
+
+# Test artifacts
+test.exe
+test.pdb
+*.test
+
 # Models (large binary files)
 *.bin
 *.gguf
 *.ggmm
 models/
 
-# Local chatllm.cpp checkout (use -Dchatllm_path instead)
-chatllm.cpp/
+# Local chatllm.cpp checkout is tracked as submodule
+# Don't ignore it, but these patterns handle common mistakes
+chatllm.cpp/build/
+chatllm.cpp/zig-out/
+chatllm.cpp/.zig-cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Temporary files
+tmp/
+temp/
+*.tmp
