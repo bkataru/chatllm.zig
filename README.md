@@ -137,6 +137,8 @@ chatllm embedding -m embedding-model.bin "Text to embed"
 | `embedding` | Generate text embeddings |
 | `pull` | Download pre-quantized models |
 | `list` | List downloaded models |
+| `show` | Show model information |
+| `rm` | Remove a downloaded model |
 
 Run `chatllm <command> --help` for detailed options.
 

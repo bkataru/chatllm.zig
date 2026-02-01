@@ -24,6 +24,8 @@ const commands = struct {
     pub const embedding = @import("commands/embedding.zig");
     pub const pull = @import("commands/pull.zig");
     pub const list = @import("commands/list.zig");
+    pub const show = @import("commands/show.zig");
+    pub const rm = @import("commands/rm.zig");
 };
 
 /// Subcommand definition
@@ -41,6 +43,8 @@ const subcommands = [_]Subcommand{
     .{ .name = "embedding", .description = "Generate text embeddings", .run_fn = commands.embedding.run },
     .{ .name = "pull", .description = "Download models", .run_fn = commands.pull.run },
     .{ .name = "list", .description = "List available models", .run_fn = commands.list.run },
+    .{ .name = "show", .description = "Show model information", .run_fn = commands.show.run },
+    .{ .name = "rm", .description = "Remove a model", .run_fn = commands.rm.run },
 };
 
 /// Print main help message
@@ -57,6 +61,8 @@ fn printHelp() void {
         \\  embedding  Generate text embeddings
         \\  pull       Download models
         \\  list       List available models
+        \\  show       Show model information
+        \\  rm         Remove a model
         \\
         \\Options:
         \\  -h, --help     Show this help
