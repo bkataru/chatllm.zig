@@ -17,68 +17,68 @@ pub const Config = struct {
 
     /// Convert config to CLI params for chatllm
     pub fn toParams(self: Config, allocator: Allocator) ![][]const u8 {
-        var params = std.ArrayList([]const u8).init(allocator);
+        var params: std.ArrayList([]const u8) = .{};
         errdefer {
             for (params.items) |item| {
                 allocator.free(item);
             }
-            params.deinit();
+            params.deinit(allocator);
         }
 
         if (self.model_path) |path| {
-            try params.append(try allocator.dupe(u8, "-m"));
-            try params.append(try allocator.dupe(u8, path));
+            try params.append(allocator, try allocator.dupe(u8, "-m"));
+            try params.append(allocator, try allocator.dupe(u8, path));
         }
 
         if (self.system_prompt) |prompt| {
-            try params.append(try allocator.dupe(u8, "--system"));
-            try params.append(try allocator.dupe(u8, prompt));
+            try params.append(allocator, try allocator.dupe(u8, "--system"));
+            try params.append(allocator, try allocator.dupe(u8, prompt));
         }
 
         if (self.threads) |t| {
-            try params.append(try allocator.dupe(u8, "-t"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d}", .{t}));
+            try params.append(allocator, try allocator.dupe(u8, "-t"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d}", .{t}));
         }
 
         if (self.context_size != 4096) {
-            try params.append(try allocator.dupe(u8, "-c"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d}", .{self.context_size}));
+            try params.append(allocator, try allocator.dupe(u8, "-c"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d}", .{self.context_size}));
         }
 
         if (self.temperature != 0.7) {
-            try params.append(try allocator.dupe(u8, "--temp"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d:.2}", .{self.temperature}));
+            try params.append(allocator, try allocator.dupe(u8, "--temp"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d:.2}", .{self.temperature}));
         }
 
         if (self.top_p != 0.9) {
-            try params.append(try allocator.dupe(u8, "--top-p"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d:.2}", .{self.top_p}));
+            try params.append(allocator, try allocator.dupe(u8, "--top-p"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d:.2}", .{self.top_p}));
         }
 
         if (self.top_k != 40) {
-            try params.append(try allocator.dupe(u8, "--top-k"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d}", .{self.top_k}));
+            try params.append(allocator, try allocator.dupe(u8, "--top-k"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d}", .{self.top_k}));
         }
 
         if (self.repeat_penalty != 1.1) {
-            try params.append(try allocator.dupe(u8, "--repeat-penalty"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d:.2}", .{self.repeat_penalty}));
+            try params.append(allocator, try allocator.dupe(u8, "--repeat-penalty"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d:.2}", .{self.repeat_penalty}));
         }
 
         if (self.max_tokens != -1) {
-            try params.append(try allocator.dupe(u8, "-n"));
-            try params.append(try std.fmt.allocPrint(allocator, "{d}", .{self.max_tokens}));
+            try params.append(allocator, try allocator.dupe(u8, "-n"));
+            try params.append(allocator, try std.fmt.allocPrint(allocator, "{d}", .{self.max_tokens}));
         }
 
         if (self.quiet) {
-            try params.append(try allocator.dupe(u8, "--quiet"));
+            try params.append(allocator, try allocator.dupe(u8, "--quiet"));
         }
 
         if (self.show_stats) {
-            try params.append(try allocator.dupe(u8, "--stats"));
+            try params.append(allocator, try allocator.dupe(u8, "--stats"));
         }
 
-        return params.toOwnedSlice();
+        return params.toOwnedSlice(allocator);
     }
 
     /// Free params allocated by toParams

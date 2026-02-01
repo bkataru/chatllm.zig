@@ -624,19 +624,18 @@ fn toCString(slice: []const u8) [*:0]const u8 {
 
 /// Parse embedding values from the CSV string emitted by PRINTLN_EMBEDDING
 pub fn parseEmbedding(allocator: Allocator, csv: []const u8) ![]f32 {
-    const ArrayListManaged = std.array_list.AlignedManaged;
-    var values = ArrayListManaged(f32, null).init(allocator);
-    errdefer values.deinit();
+    var values: std.ArrayList(f32) = .{};
+    errdefer values.deinit(allocator);
 
     var iter = std.mem.splitScalar(u8, csv, ',');
     while (iter.next()) |token| {
         const trimmed = std.mem.trim(u8, token, " \t\r\n");
         if (trimmed.len == 0) continue;
         const value = std.fmt.parseFloat(f32, trimmed) catch continue;
-        try values.append(value);
+        try values.append(allocator, value);
     }
 
-    return values.toOwnedSlice();
+    return values.toOwnedSlice(allocator);
 }
 
 /// Parse a single ranking score from the PRINTLN_RANKING output
@@ -647,7 +646,7 @@ pub fn parseRanking(output: []const u8) ?f32 {
 
 /// Parse token IDs from the CSV string emitted by PRINTLN_TOKEN_IDS
 pub fn parseTokenIds(allocator: Allocator, csv: []const u8) ![]i32 {
-    var ids = std.ArrayListUnmanaged(i32){};
+    var ids: std.ArrayList(i32) = .{};
     errdefer ids.deinit(allocator);
 
     var iter = std.mem.splitScalar(u8, csv, ',');
